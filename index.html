@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Zaira &amp; Juan Esteban | Nuestro Amor Eterno 🖤</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030509;
+            --bg-2: #070c17;
+            --panel: rgba(15, 23, 42, .78);
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --blue: #93c5fd;
+            --blue-d: #3b82f6;
+            --rose: #fb7185;
+            --rose-d: #be123c;
+            --line: rgba(147, 197, 253, .18);
+            --font-display: 'Cinzel', Georgia, serif;
+            --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+            --radius: 1rem;
+            --ease: cubic-bezier(.4, 0, .2, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            min-height: 100vh;
+            color: var(--text);
+            font: 400 1rem/1.75 var(--font-body);
+            background: radial-gradient(circle at 50% 15%, #1e293b 0%, var(--bg-2) 60%, var(--bg) 100%) fixed;
+            padding: max(1.5rem, env(safe-area-inset-top)) 1rem max(1.5rem, env(safe-area-inset-bottom));
+            overflow-x: hidden;
+        }
+
+        body.locked {
+            overflow: hidden
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--blue);
+            outline-offset: 3px
+        }
+
+        .mist {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            background: radial-gradient(ellipse 60% 30% at 20% 80%, rgba(147, 197, 253, .07), transparent),
+                radial-gradient(ellipse 50% 30% at 80% 70%, rgba(190, 18, 60, .07), transparent);
+            animation: drift 40s ease-in-out infinite alternate
+        }
+
+        @keyframes drift {
+            to {
+                transform: translateX(-4%) scale(1.05)
+            }
+        }
+
+        #particles {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none
+        }
+
+        /* Pantalla de bienvenida */
+        .gate {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: radial-gradient(circle at 50% 40%, #0f172a, var(--bg) 70%);
+            transition: opacity .9s var(--ease), visibility .9s
+        }
+
+        .gate.hide {
+            opacity: 0;
+            visibility: hidden
+        }
+
+        .gate-btn {
+            all: unset;
+            cursor: pointer;
+            display: grid;
+            gap: 1.25rem;
+            justify-items: center;
+            max-width: 26rem
+        }
+
+        .gate-heart {
+            font-size: 3.5rem;
+            animation: beat 2.4s ease-in-out infinite;
+            filter: drop-shadow(0 0 18px rgba(190, 18, 60, .7))
+        }
+
+        @keyframes beat {
+
+            0%,
+            100% {
+                transform: scale(1)
+            }
+
+            15% {
+                transform: scale(1.15)
+            }
+
+            30% {
+                transform: scale(1)
+            }
+
+            45% {
+                transform: scale(1.1)
+            }
+        }
+
+        .gate h2 {
+            font: 600 clamp(1.5rem, 5vw, 2.2rem)/1.2 var(--font-display);
+            letter-spacing: .08em
+        }
+
+        .gate p {
+            color: var(--muted);
+            font-size: .9rem
+        }
+
+        .gate .enter {
+            margin-top: .5rem;
+            padding: .85rem 2.2rem;
+            border-radius: 999px;
+            font: 600 .9rem var(--font-display);
+            letter-spacing: .12em;
+            border: 1px solid rgba(147, 197, 253, .4);
+            background: linear-gradient(135deg, #1e3a8a, var(--rose-d));
+            transition: transform .3s var(--ease), box-shadow .3s
+        }
+
+        .gate-btn:hover .enter,
+        .gate-btn:focus-visible .enter {
+            transform: scale(1.05);
+            box-shadow: 0 0 28px rgba(59, 130, 246, .5)
+        }
+
+        /* Reproductor flotante */
+        .player {
+            position: fixed;
+            top: max(1rem, env(safe-area-inset-top));
+            right: 1rem;
+            z-index: 50;
+            display: flex;
+            gap: .4rem;
+            padding: .35rem;
+            border-radius: 999px;
+            background: var(--panel);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--line);
+            opacity: 0;
+            transform: translateY(-.5rem);
+            transition: opacity .6s var(--ease) .4s, transform .6s var(--ease) .4s
+        }
+
+        body.entered .player {
+            opacity: 1;
+            transform: none
+        }
+
+        .player button {
+            all: unset;
+            cursor: pointer;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: var(--blue);
+            transition: background .25s, color .25s
+        }
+
+        .player button:hover {
+            background: rgba(147, 197, 253, .15);
+            color: #fff
+        }
+
+        .player button:focus-visible {
+            outline: 2px solid var(--blue)
+        }
+
+        .player svg {
+            width: 1.3rem;
+            height: 1.3rem
+        }
+
+        .player [hidden] {
+            display: none
+        }
+
+        #yt-host {
+            position: fixed;
+            left: -9999px;
+            top: 0;
+            width: 200px;
+            height: 200px;
+            pointer-events: none
+        }
+
+        /* Layout */
+        .wrap {
+            max-width: 52rem;
+            margin-inline: auto;
+            position: relative
+        }
+
+        .site-header {
+            text-align: center;
+            padding: 2.5rem 0 2rem
+        }
+
+        .badge {
+            display: inline-block;
+            padding: .35rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(96, 165, 250, .3);
+            background: rgba(23, 37, 84, .4);
+            color: #bfdbfe;
+            font: .72rem var(--font-display);
+            letter-spacing: .14em;
+            margin-bottom: 1rem
+        }
+
+        h1 {
+            font: 700 clamp(2rem, 7vw, 3.5rem)/1.15 var(--font-display);
+            letter-spacing: .05em;
+            background: linear-gradient(90deg, #f1f5f9, #bfdbfe, #fecdd3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent
+        }
+
+        .tagline {
+            font: .85rem var(--font-display);
+            color: var(--muted);
+            letter-spacing: .12em;
+            margin-top: .75rem
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: .6rem;
+            margin-bottom: 1.75rem
+        }
+
+        .tab {
+            all: unset;
+            cursor: pointer;
+            padding: .65rem 1.1rem;
+            border-radius: .8rem;
+            border: 1px solid rgba(51, 65, 85, .7);
+            background: rgba(15, 23, 42, .6);
+            color: #cbd5e1;
+            font: 600 .8rem var(--font-display);
+            transition: all .3s var(--ease)
+        }
+
+        .tab:hover {
+            transform: translateY(-2px);
+            border-color: var(--line);
+            box-shadow: 0 0 20px rgba(59, 130, 246, .3)
+        }
+
+        .tab:focus-visible {
+            outline: 2px solid var(--blue);
+            outline-offset: 2px
+        }
+
+        .tab[aria-selected="true"] {
+            background: linear-gradient(135deg, rgba(30, 58, 138, .85), rgba(190, 18, 60, .85));
+            border-color: var(--blue);
+            color: #fff;
+            box-shadow: 0 0 16px rgba(59, 130, 246, .45)
+        }
+
+        .card {
+            background: var(--panel);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--line);
+            border-radius: 1.25rem;
+            padding: clamp(1.25rem, 4vw, 2.5rem);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .7), 0 0 30px rgba(59, 130, 246, .1)
+        }
+
+        .panel[hidden] {
+            display: none
+        }
+
+        .panel {
+            animation: fade .5s var(--ease)
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+        }
+
+        .card-head {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: .75rem;
+            padding-bottom: 1rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid rgba(59, 130, 246, .2)
+        }
+
+        h2.title {
+            font: 700 clamp(1.15rem, 3.5vw, 1.5rem)/1.3 var(--font-display);
+            color: #dbeafe
+        }
+
+        .tag {
+            font: .72rem var(--font-display);
+            color: #fda4af;
+            background: rgba(76, 5, 25, .4);
+            padding: .25rem .8rem;
+            border-radius: 999px;
+            border: 1px solid rgba(244, 63, 94, .3)
+        }
+
+        .tag.blue {
+            color: #93c5fd;
+            background: rgba(23, 37, 84, .4);
+            border-color: rgba(59, 130, 246, .3)
+        }
+
+        .quote {
+            border-left: 4px solid var(--blue-d);
+            background: rgba(23, 37, 84, .3);
+            padding: 1rem 1.2rem;
+            border-radius: 0 .6rem .6rem 0;
+            font: italic 1rem/1.7 Georgia, serif;
+            color: #bfdbfe;
+            margin-bottom: 1.25rem
+        }
+
+        .quote.rose {
+            border-color: var(--rose-d);
+            background: rgba(76, 5, 25, .3);
+            color: #fecdd3
+        }
+
+        .letter {
+            display: grid;
+            gap: 1rem;
+            max-height: 28rem;
+            overflow-y: auto;
+            padding-right: .75rem;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(147, 197, 253, .3) transparent;
+            color: #cbd5e1
+        }
+
+        .letter .to {
+            font: 600 1.15rem var(--font-display);
+            color: #fda4af
+        }
+
+        .letter .aside {
+            font: italic 1rem var(--font-display);
+            color: #fda4af
+        }
+
+        .sign {
+            text-align: right;
+            font-family: var(--font-display);
+            color: #93c5fd;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(51, 65, 85, .5)
+        }
+
+        .sign strong {
+            display: block;
+            font-size: 1.15rem;
+            color: #fda4af
+        }
+
+        .thoughts {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(59, 130, 246, .2)
+        }
+
+        .thoughts blockquote {
+            background: rgba(15, 23, 42, .85);
+            padding: 1rem;
+            border-radius: var(--radius);
+            border: 1px solid rgba(51, 65, 85, .5);
+            font-size: .88rem;
+            font-style: italic
+        }
+
+        .fever {
+            background: rgba(15, 23, 42, .9);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            border: 1px solid rgba(136, 19, 55, .4);
+            display: grid;
+            gap: 1rem
+        }
+
+        .fever strong {
+            color: #fda4af
+        }
+
+        .note {
+            margin-top: 1.25rem;
+            padding: 1rem;
+            background: rgba(23, 37, 84, .4);
+            border: 1px solid rgba(59, 130, 246, .2);
+            border-radius: var(--radius);
+            font: .85rem var(--font-display);
+            color: #bfdbfe
+        }
+
+        details {
+            border-radius: var(--radius);
+            background: rgba(15, 23, 42, .85);
+            border: 1px solid rgba(59, 130, 246, .3);
+            transition: border-color .3s, box-shadow .3s
+        }
+
+        details.rose {
+            border-color: rgba(244, 63, 94, .3)
+        }
+
+        details:hover {
+            box-shadow: 0 0 22px rgba(59, 130, 246, .3)
+        }
+
+        details.rose:hover {
+            box-shadow: 0 0 22px rgba(190, 18, 60, .45)
+        }
+
+        summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 1rem 1.2rem;
+            font: .9rem var(--font-display);
+            color: #bfdbfe;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem
+        }
+
+        details.rose summary {
+            color: #fecdd3
+        }
+
+        summary::-webkit-details-marker {
+            display: none
+        }
+
+        summary::after {
+            content: "▼";
+            font-size: .7rem;
+            transition: transform .3s var(--ease)
+        }
+
+        details[open] summary::after {
+            transform: rotate(180deg)
+        }
+
+        details .body {
+            padding: 0 1.2rem 1.2rem;
+            font-size: .92rem;
+            display: grid;
+            gap: .6rem;
+            animation: fade .4s var(--ease)
+        }
+
+        details ul,
+        details ol {
+            padding-left: 1.2rem;
+            display: grid;
+            gap: .5rem
+        }
+
+        .chest {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+            margin-top: 1.5rem;
+            align-items: start
+        }
+
+        .secret {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(51, 65, 85, .5);
+            text-align: center
+        }
+
+        .secret summary {
+            display: inline-flex;
+            padding: .8rem 2rem;
+            border-radius: 999px;
+            border: 1px solid rgba(147, 197, 253, .3);
+            color: #fff;
+            font-weight: 700;
+            background: linear-gradient(90deg, #1d4ed8, #4f46e5, #be123c);
+            transition: transform .3s var(--ease)
+        }
+
+        .secret details {
+            all: unset;
+            display: block
+        }
+
+        .secret summary:hover {
+            transform: scale(1.05)
+        }
+
+        .secret summary::after {
+            display: none
+        }
+
+        .secret .msg {
+            margin-top: 1.25rem;
+            padding: 1.5rem;
+            text-align: left;
+            border-radius: 1.25rem;
+            border: 1px solid rgba(244, 63, 94, .4);
+            background: linear-gradient(to bottom, #0f172a, rgba(76, 5, 25, .5));
+            animation: fade .5s var(--ease)
+        }
+
+        .secret h3 {
+            font: 700 1rem var(--font-display);
+            color: #fda4af;
+            margin-bottom: .5rem
+        }
+
+        .video-wrap {
+            position: relative;
+            aspect-ratio: 16/9;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--line);
+            box-shadow: 0 0 30px rgba(59, 130, 246, .25);
+            background: #000
+        }
+
+        .video-wrap iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0
+        }
+
+        .site-footer {
+            text-align: center;
+            margin-top: 2rem;
+            font: .75rem var(--font-display);
+            color: #64748b
+        }
+
+        .site-footer p+p {
+            color: #475569
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important
+            }
+        }
+    </style>
+</head>
+
+<body class="locked">
+
+    <div class="mist" aria-hidden="true"></div>
+    <canvas id="particles" aria-hidden="true"></canvas>
+
+    <!-- Pantalla de bienvenida: el clic activa la música (bypass de autoplay) -->
+    <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+        <button class="gate-btn" id="enter" type="button">
+            <span class="gate-heart" aria-hidden="true">🖤</span>
+            <h2 id="gate-title">Zaira, esto es para ti</h2>
+            <p>Esta página tiene música de fondo. Toca para entrar y escucharla.</p>
+            <span class="enter">ENTRAR</span>
+        </button>
+    </div>
+
+    <!-- Reproductor flotante -->
+    <div class="player" role="group" aria-label="Música de fondo">
+        <button id="btn-play" type="button" aria-label="Pausar música">
+            <svg id="ic-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round">
+                <path d="M10 5v14M16 5v14" />
+            </svg>
+            <svg id="ic-play" viewBox="0 0 24 24" fill="currentColor" hidden>
+                <path d="M8 5.5v13l11-6.5z" />
+            </svg>
+        </button>
+        <button id="btn-mute" type="button" aria-label="Silenciar música">
+            <svg id="ic-vol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 5 6 9H3v6h3l5 4z" />
+                <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" />
+            </svg>
+            <svg id="ic-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" hidden>
+                <path d="M11 5 6 9H3v6h3l5 4z" />
+                <path d="m22 9-6 6M16 9l6 6" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Reproductor de YouTube oculto (solo se usa el audio) -->
+    <div id="yt-host" aria-hidden="true">
+        <div id="yt-player"></div>
+    </div>
+    <!-- Alternativa: archivo local (ver CONFIG.localAudio en el script) -->
+    <audio id="local-audio" loop preload="auto"></audio>
+
+    <div class="wrap">
+        <header class="site-header">
+            <span class="badge">🖤 Tres meses de devoción eterna 🖤</span>
+            <h1>Zaira &amp; Juan Esteban</h1>
+            <p class="tagline">“Ni el tiempo ni las tormentas podrán apagar lo que siento por ti”</p>
+        </header>
+
+        <nav class="tabs" role="tablist" aria-label="Secciones">
+            <button class="tab" role="tab" id="t-devocion" aria-controls="p-devocion" aria-selected="true">🌹 Carta de
+                Devoción</button>
+            <button class="tab" role="tab" id="t-consuelo" aria-controls="p-consuelo" aria-selected="false"
+                tabindex="-1">🛡️ Refugio de Consuelo</button>
+            <button class="tab" role="tab" id="t-fiebre" aria-controls="p-fiebre" aria-selected="false" tabindex="-1">🔥
+                Un Suspiro en la Fiebre</button>
+            <button class="tab" role="tab" id="t-baul" aria-controls="p-baul" aria-selected="false" tabindex="-1">✨ Baúl
+                &amp; Promesas</button>
+            <button class="tab" role="tab" id="t-cancion" aria-controls="p-cancion" aria-selected="false"
+                tabindex="-1">🎵 Nuestra Canción</button>
+        </nav>
+
+        <main>
+            <section class="panel" role="tabpanel" id="p-devocion" aria-labelledby="t-devocion">
+                <article class="card">
+                    <div class="card-head">
+                        <h2 class="title">Carta de un Caballero: Tu Eterno Protector</h2>
+                        <span class="tag">3 meses juntos</span>
+                    </div>
+                    <p class="quote">“Como Edward y Bella en medio de la oscuridad y la tormenta... sin importar las
+                        pruebas, las dudas o los obstáculos, mi corazón te sigue eligiendo todos los días.”</p>
+                    <div class="letter" tabindex="0" aria-label="Carta de devoción">
+                        <p class="to">Zaira...</p>
+                        <p>Si el tiempo se midiera por la intensidad de los latidos y no por los segundos en un reloj,
+                            estos tres meses que llevamos compartiendo el mundo se extenderían como una eternidad
+                            inabarcable. Desde el instante exacto en que entraste en mi vida, todo lo demás dejó de
+                            importar; te convertiste en el centro magnético de mi existencia, en la única luz capaz de
+                            atravesar cualquier sombra.</p>
+                        <p>Escribirte esto requiere despojarme de todo orgullo, de toda armadura, y dejar al descubierto
+                            lo que hay en el fondo de mi alma, con la misma solemnidad y devoción con la que un
+                            caballero de otras épocas entregaba su juramento más sagrado. Porque lo que siento por ti no
+                            conoce de medidas ni de condiciones racionales. Te amo con una fuerza que a menudo me
+                            sobrepasa, una fuerza que desafía los obstáculos, el cansancio y las tormentas que a veces
+                            intentan quebrarnos.</p>
+                        <p>Sé que estos últimos días no han sido sencillos. La niebla de la confusión, el peso de los
+                            malentendidos, las distancias y los dolores acumulados han querido apagar el brillo de lo
+                            nuestro. He sentido el frío de los desencuentros, la punzada de las palabras
+                            malinterpretadas y el eco de un silencio que duele en el pecho. A veces, las dificultades
+                            del camino nos hacen dudar, nos hacen tropezar y nos dejan con heridas invisibles que tardan
+                            en sanar.</p>
+                        <p>Sin embargo, incluso en medio de las noches más oscuras y de las pruebas más difíciles que
+                            hemos tenido que afrontar en este corto pero intenso trayecto, mi corazón no sabe ni quiere
+                            elegir otra cosa que no seas tú.</p>
+                        <p>Eres mi paz y, al mismo tiempo, la emoción más profunda que jamás he conocido. Sé que a veces
+                            me esfuerzo por mantener el control, por entregarte cada detalle, cada pedazo de mi cuidado
+                            y mi atención, esperando que sepas que daría todo por verte sonreír y sentirte segura a mi
+                            lado. Si en algún momento mis miedos, mis torpezas o las circunstancias te han hecho dudar
+                            de la pureza de mi devoción, te pido que mires más allá de la superficie. Mi compromiso
+                            contigo es tan inquebrantable como el tiempo mismo.</p>
+                        <p>No importa cuán fuerte sople el viento en contra, ni cuántas veces la realidad intente
+                            ponernos a prueba. Yo elegí consagrarte mis pensamientos, mis días y mis desvelos. Y aunque
+                            hoy nos encontremos en una pausa necesaria, en un espacio para respirar y sanar, quiero que
+                            sepas que mi lealtad hacia ti permanece intacta, firme como la roca que resiste el embate de
+                            las olas.</p>
+                        <p>Si el destino me diera a elegir entre una vida fácil y sin sobresaltos, o esta vida a tu lado
+                            con todas sus batallas y sus lágrimas, te volvería a elegir a ti una y mil veces en cada
+                            vida posible. Porque amarte es lo único verdadero y absoluto que define quién soy ahora.</p>
+                        <p>Que las estrellas cuiden tus sueños esta noche, Zaira. Y que sepas, donde quiera que estés
+                            leyendo esto, que mi alma sigue y seguirá guardando un lugar eterno únicamente para ti.</p>
+                        <div class="sign">
+                            <p>Con devoción inalterable,</p><strong>Tu eterno protector.</strong>
+                        </div>
+                    </div>
+                    <div class="thoughts">
+                        <blockquote>“A veces eres un torbellino, compleja y difícil de descifrar... pero aun en medio de
+                            todas las tormentas, te amo con cada fibra de mi alma. Eres de esas personas por las que
+                            vale la pena luchar, complicarse y quedarse, porque cada latido tuyo a mi lado lo vale
+                            todo.”</blockquote>
+                        <blockquote>“Sé que a veces las cosas se ponen difíciles y que tienes tu carácter, pero quiero
+                            que sepas algo con el corazón en la mano: te amo profundamente. Con todo y los enredos,
+                            vales absolutamente la pena, hoy y siempre.”</blockquote>
+                        <blockquote>“Tienes tus días complicados, sí... pero te amo tanto, de una forma tan real, que
+                            daría lo que fuera por cuidarte. Ninguna dificultad cambia lo mucho que te adoro, porque tú
+                            y lo nuestro valen cada esfuerzo del mundo.”</blockquote>
+                    </div>
+                </article>
+            </section>
+
+            <section class="panel" role="tabpanel" id="p-consuelo" aria-labelledby="t-consuelo" hidden>
+                <article class="card">
+                    <div class="card-head">
+                        <h2 class="title" style="color:#fecdd3">Refugio de Consuelo: Tu Llanto es mi Llanto</h2>
+                        <span class="tag blue">Para mi reina Zaira</span>
+                    </div>
+                    <p class="quote rose">“Si estuviera a mi alcance, mi reina, te juro por mi honor de caballero que me
+                        arrancaría el propio corazón y lo pondría en tus manos si con ello pudiera sanar tan siquiera un
+                        ápice de tu pena...”</p>
+                    <div class="letter" tabindex="0" aria-label="Carta de consuelo">
+                        <p class="to" style="color:#93c5fd">Mi estimada y adorada reina Zaira,</p>
+                        <p>Antes de surcar los senderos de este consuelo, mi alma necesita dejar constancia de la
+                            profunda congoja que habita en mi pecho al recordar nuestro último desencuentro. Sabes bien
+                            cuánto te amo y cómo cada lágrima tuya es una espada que se clava en mis entrañas. Cuando me
+                            abriste tu corazón y me hablaste de tus queridas mascotas, de aquel dolor inmenso que te
+                            ahoga al recordarlas y de la tentación de cruzar umbrales peligrosos —pues bien sé que esas
+                            tierras lejanas de México guardan misterios oscuros, altares prohibidos y sombras que ningún
+                            mortal debería desafiar a la ligera—, mi única intención fue protegerte. Te dije con el alma
+                            en la mano que comprendía tu sufrimiento, porque tu dolor es el mío; mas mi advertencia
+                            sobre los peligros de tales ritos no nació del rechazo, sino del terror ferviente a perderte
+                            ante fuerzas que escapan a nuestro entendimiento. Me dolió en el alma que interpretaras mis
+                            palabras como una negativa o una agresión, y que sientas que mis abrazos y mis palabras de
+                            aliento no son suficientes. No es un simple abrazo, amor mío; es el refugio donde intento
+                            arrancarte el dolor del pecho para hacerlo mío. Me desgasta el alma saber que te cierras y
+                            que piensas que no estoy ahí para ti, cuando daría mi vida entera por ser el escudo que te
+                            devuelva la paz.</p>
+                        <p class="aside">Y ahora, volviendo la mirada hacia la tempestad de tu tristeza actual, quiero
+                            decirte esto:</p>
+                        <p>He escuchado el eco de tu voz en ese audio, cargado de lágrimas y de un dolor tan profundo
+                            que ha traspasado la distancia para desgarrarme el alma. Sé cuánto has llorado recordando a
+                            tus fieles compañeros, a esas almas nobles que un día te entregaron su amor más puro y que
+                            hoy habitan en el reino eterno del recuerdo. Es un sufrimiento inmenso, lo sé. Escuchar la
+                            historia de aquel perrito que, incluso después de partir, quiso quedarse unos instantes al
+                            lado de su dueña para despedirse, ha tocado las fibras más sensibles de tu corazón,
+                            reviviendo la ausencia de quienes fueron tus leales amigos y protectores.</p>
+                        <p>Si estuviera a mi alcance, mi reina, te juro por mi honor de caballero que me arrancaría el
+                            propio corazón y lo pondría en tus manos si con ello pudiera sanar tan siquiera un ápice de
+                            tu pena, o si pudiera abrir un instante el velo entre este mundo y el silencio para que
+                            volvieras a abrazar a quienes tanto extrañas. Pero sé bien que deseas cruzar senderos
+                            peligrosos y prohibidos para buscar aquello que ya se ha ido, y mi deber como tu eterno
+                            guardián es recordarte que tu hermosa vida es sagrada, y que el mundo aún necesita de tu
+                            luz.</p>
+                        <p>Me duele el pecho al saber que el mundo a veces es cruel, y comparto tu indignación ante
+                            aquellos que lastiman a seres inocentes que no tienen cómo defenderse. Es una injusticia que
+                            lacera el espíritu. Pero en medio de esta noche fría y de este llanto que hoy te ahoga,
+                            quiero que cierres los ojos por un instante y sientas la presencia de mi amor.</p>
+                        <p>Tus mascotas no se han ido del todo; su amor vive inmortal en cada latido de tu noble pecho y
+                            en cada lágrima que derramas con tanta ternura. Ellos te amaron con la devoción más limpia
+                            que existe, y jamás desearían verte consumida por el sufrimiento, sino honrando su memoria
+                            con esa misma bondad que tú posees.</p>
+                        <p>Aquí estoy yo, arrodillado ante tu tristeza, dispuesto a blandir mi espada contra cualquier
+                            sombra que ose turbar tus sueños, y listo para sostenerte cuando sientas que las fuerzas te
+                            flaquean. No estás sola, mi preciosa reina. Permíteme ser el refugio donde descanses tu
+                            cabeza cansada, y que este caballero tuyo cargue con un poco de tu dolor para devolverte la
+                            paz.</p>
+                        <div class="sign" style="color:#fda4af">
+                            <p>Que la noche cuide de tu descanso, Zaira de mi alma.</p><strong
+                                style="color:#93c5fd">Seca tus lágrimas, porque en este corazón tuyo, tu fiel caballero
+                                jamás dejará de amarte y de protegerte.</strong>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="panel" role="tabpanel" id="p-fiebre" aria-labelledby="t-fiebre" hidden>
+                <article class="card">
+                    <div class="card-head">
+                        <div>
+                            <h2 class="title" style="color:#fecdd3">🔥 Un Suspiro en Medio de la Fiebre</h2>
+                            <p style="font:.75rem var(--font-display);color:var(--muted)">Aunque el cuerpo flaquee, la
+                                devoción permanece intacta</p>
+                        </div>
+                    </div>
+                    <div class="fever">
+                        <p>Zaira mi vida... Hoy te escribo con el cuerpo cansado, luchando contra la fiebre, la pesadez
+                            y un malestar físico que intenta doblegarme. Pero aun con el dolor que me quema y el
+                            agotamiento de estos días, quiero que sepas una verdad absoluta: <strong>mi amor por ti no
+                                se rinde.</strong></p>
+                        <p>No quiero que terminemos. Jamás ha sido mi deseo alejarme de ti ni soltar tu mano. Lo único
+                            que le pido al destino y a ti es que aprendamos a entendernos, que dejemos de herirnos sin
+                            querer y que sanemos juntos. Si me he mostrado abatido no es porque haya dejado de amarte,
+                            sino porque me duele no sentir la reciprocidad y el abrazo cálido que tanto necesito en mis
+                            momentos más vulnerables.</p>
+                        <p>A pesar del ardor en mi cuerpo y de todas las dificultades de estos tres meses, aquí sigo,
+                            firme a tu lado, deseando con todo mi ser que volvamos a ser el refugio de paz que los dos
+                            merecemos.</p>
+                    </div>
+                    <p class="note">🕯️ “Mi lealtad no depende de los días fáciles, sino de la verdad de lo que siento
+                        por ti.”</p>
+                </article>
+            </section>
+
+            <section class="panel" role="tabpanel" id="p-baul" aria-labelledby="t-baul" hidden>
+                <article class="card">
+                    <div style="text-align:center;max-width:32rem;margin:0 auto">
+                        <h2 class="title">Baúl de Promesas &amp; Secretos</h2>
+                        <p style="font-size:.85rem;color:var(--muted)">Abre cada cofre para descubrir los pilares de mi
+                            amor por ti.</p>
+                    </div>
+                    <div class="chest">
+                        <details>
+                            <summary>🛡️ Juramento de Promesas</summary>
+                            <div class="body">
+                                <p style="font:700 .9rem var(--font-display);color:#93c5fd">Mis 3 promesas
+                                    inquebrantables:</p>
+                                <ul>
+                                    <li><strong>Protección constante:</strong> ser tu refugio seguro en medio de
+                                        cualquier tormenta personal o emocional.</li>
+                                    <li><strong>Escucha sin juicio:</strong> aprender a comprender tu corazón,
+                                        respetando tus procesos e inseguridades.</li>
+                                    <li><strong>Amor sin medidas:</strong> mantener mi devoción firme, buscando siempre
+                                        el camino para sanar y estar juntos.</li>
+                                </ul>
+                            </div>
+                        </details>
+                        <details class="rose">
+                            <summary>🌹 5 razones por las que te elijo</summary>
+                            <div class="body">
+                                <p style="font:700 .9rem var(--font-display);color:#fda4af">Por qué te elijo cada día:
+                                </p>
+                                <ol>
+                                    <li>Por la pureza y ternura que habita en el fondo de tu noble corazón.</li>
+                                    <li>Por la chispa y la luz que le das a mi vida desde que llegaste.</li>
+                                    <li>Porque incluso en nuestras diferencias, mi alma no desea a nadie más.</li>
+                                    <li>Por la belleza de tu mirada y la valentía con la que sientes las cosas.</li>
+                                    <li>Porque amarte me ha enseñado el verdadero valor de luchar por alguien.</li>
+                                </ol>
+                            </div>
+                        </details>
+                    </div>
+                    <div class="secret">
+                        <details>
+                            <summary>Toca el Corazón de Cristal 🖤✨</summary>
+                            <div class="msg">
+                                <h3>🥀 Mensaje secreto para Zaira</h3>
+                                <p style="font-size:.92rem">No importa cuán difícil parezca el presente ni las lágrimas
+                                    que hayamos derramado en estos tres meses. Si me permites tomar tu mano, te prometo
+                                    que construiré para los dos un espacio donde el dolor del pasado no vuelva a
+                                    tocarte. Gracias por estos tres meses de existencia compartida. Te amo más allá de
+                                    las palabras.</p>
+                            </div>
+                        </details>
+                    </div>
+                </article>
+            </section>
+            <section class="panel" role="tabpanel" id="p-cancion" aria-labelledby="t-cancion" hidden>
+                <article class="card">
+                    <div class="card-head">
+                        <h2 class="title">Una canción para ti, Zaira</h2>
+                        <span class="tag">Dale play 🖤</span>
+                    </div>
+                    <p class="quote">Al darle play a este video, la música de fondo se pausa para que puedas escucharlo
+                        con calma.</p>
+                    <div class="video-wrap">
+                        <iframe id="yt-showcase" title="Nuestra canción"
+                            allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen
+                            referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                    </div>
+                    <p class="note" style="font-family:var(--font-body)">¿Se ve en negro? <a id="yt-link"
+                            target="_blank" rel="noopener" style="color:var(--blue);text-decoration:underline">Ábrelo en
+                            YouTube</a>.</p>
+                </article>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <p>Concebido con devoción y amor eterno para Zaira</p>
+            <p>Juan Esteban • 3 meses juntos</p>
+        </footer>
+    </div>
+
+    <script>
+        /* ================= CONFIGURACIÓN DE LA MÚSICA ================= */
+        const CONFIG = {
+            youtubeId: 'f8u6riOK3Qk',   // https://youtu.be/f8u6riOK3Qk (solo se reproduce el audio, no se muestra video)
+            localAudio: '',             // Opcional: ruta a un MP3 propio, ej. 'audio/musica.mp3'. Si se rellena, se usa en lugar de YouTube.
+            volume: 60                  // 0 - 100
+        };
+
+        /* ================= MOTOR DE AUDIO (YouTube oculto o <audio>) ================= */
+        const $ = id => document.getElementById(id);
+        const state = { ready: false, wantPlay: false, playing: false, muted: false };
+        let yt = null;
+        const local = $('local-audio');
+        const useLocal = !!CONFIG.localAudio;
+
+        const engine = {
+            play() { useLocal ? local.play().catch(() => { }) : yt && yt.playVideo(); },
+            pause() { useLocal ? local.pause() : yt && yt.pauseVideo(); },
+            mute(m) { useLocal ? (local.muted = m) : yt && (m ? yt.mute() : yt.unMute()); }
+        };
+
+        function paintPlayer() {
+            $('ic-pause').hidden = !state.playing;
+            $('ic-play').hidden = state.playing;
+            $('btn-play').setAttribute('aria-label', state.playing ? 'Pausar música' : 'Reproducir música');
+            $('ic-vol').hidden = state.muted;
+            $('ic-mute').hidden = !state.muted;
+            $('btn-mute').setAttribute('aria-label', state.muted ? 'Activar sonido' : 'Silenciar música');
+        }
+
+        if (useLocal) {
+            local.src = CONFIG.localAudio; local.volume = CONFIG.volume / 100; state.ready = true;
+            local.addEventListener('play', () => { state.playing = true; paintPlayer(); });
+            local.addEventListener('pause', () => { state.playing = false; paintPlayer(); });
+        }
+        const apiScript = document.createElement('script');
+        apiScript.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(apiScript);
+        let showcase = null;
+        {
+            const origin = location.protocol.startsWith('http') ? '&origin=' + encodeURIComponent(location.origin) : '';
+            $('yt-showcase').src = `https://www.youtube.com/embed/${CONFIG.youtubeId}?enablejsapi=1&playsinline=1&rel=0&modestbranding=1${origin}`;
+            $('yt-link').href = `https://youtu.be/${CONFIG.youtubeId}`;
+        }
+        window.onYouTubeIframeAPIReady = () => {
+            // Video visible en la pestaña "Nuestra Canción": al reproducirlo se pausa la música de fondo
+            showcase = new YT.Player('yt-showcase', {
+                events: {
+                    onStateChange(e) {
+                        if (e.data === YT.PlayerState.PLAYING && state.playing) { state.wantPlay = false; engine.pause(); }
+                    }
+                }
+            });
+            if (useLocal) return;
+            yt = new YT.Player('yt-player', {
+                width: '200', height: '200', videoId: CONFIG.youtubeId,
+                playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, playsinline: 1, rel: 0, modestbranding: 1, loop: 1, playlist: CONFIG.youtubeId },
+                events: {
+                    onReady() { state.ready = true; yt.setVolume(CONFIG.volume); if (state.wantPlay) yt.playVideo(); },
+                    onStateChange(e) {
+                        if (e.data === YT.PlayerState.ENDED) { yt.seekTo(0); yt.playVideo(); }   // bucle continuo
+                        state.playing = e.data === YT.PlayerState.PLAYING || e.data === YT.PlayerState.BUFFERING;
+                        paintPlayer();
+                    }
+                }
+            });
+        };
+
+        /* ================= PANTALLA DE BIENVENIDA ================= */
+        $('enter').addEventListener('click', () => {
+            state.wantPlay = true;
+            if (state.ready) engine.play();          // se ejecuta dentro del gesto del usuario
+            $('gate').classList.add('hide');
+            document.body.classList.remove('locked');
+            document.body.classList.add('entered');
+            $('gate').addEventListener('transitionend', () => $('gate').remove(), { once: true });
+        });
+        $('btn-play').addEventListener('click', () => {
+            if (state.playing) { state.wantPlay = false; engine.pause(); }
+            else { state.wantPlay = true; if (showcase && showcase.pauseVideo) showcase.pauseVideo(); engine.play(); }
+        });
+        $('btn-mute').addEventListener('click', () => {
+            state.muted = !state.muted; engine.mute(state.muted); paintPlayer();
+        });
+
+        /* ================= PESTAÑAS (accesibles, con flechas) ================= */
+        const tabs = [...document.querySelectorAll('.tab')];
+        function selectTab(tab) {
+            tabs.forEach(t => {
+                const on = t === tab;
+                t.setAttribute('aria-selected', on);
+                t.tabIndex = on ? 0 : -1;
+                $(t.getAttribute('aria-controls')).hidden = !on;
+            });
+        }
+        tabs.forEach((t, i) => {
+            t.addEventListener('click', () => selectTab(t));
+            t.addEventListener('keydown', e => {
+                const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+                if (!d) return;
+                const n = tabs[(i + d + tabs.length) % tabs.length];
+                n.focus(); selectTab(n);
+            });
+        });
+
+        /* ================= PARTÍCULAS (luciérnagas y pétalos) ================= */
+        (() => {
+            if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const c = $('particles'), ctx = c.getContext('2d');
+            let W, H;
+            const size = () => { W = c.width = innerWidth; H = c.height = innerHeight; };
+            size(); addEventListener('resize', size);
+            const make = (fromBottom) => ({
+                x: Math.random() * W, y: fromBottom ? H + 10 : Math.random() * H,
+                r: Math.random() * 3 + 1, vx: (Math.random() - .5) * .5, vy: -Math.random() * .8 - .2,
+                o: Math.random() * .7 + .2, petal: Math.random() > .6
+            });
+            const ps = Array.from({ length: innerWidth < 600 ? 28 : 50 }, () => make(false));
+            let raf;
+            function frame() {
+                ctx.clearRect(0, 0, W, H);
+                for (let i = 0; i < ps.length; i++) {
+                    const p = ps[i];
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.y < -10 || p.x < -10 || p.x > W + 10) ps[i] = make(true);
+                    ctx.beginPath();
+                    if (p.petal) { ctx.fillStyle = `rgba(190,18,60,${p.o})`; ctx.ellipse(p.x, p.y, p.r * 1.5, p.r, Math.PI / 4, 0, 6.283); ctx.shadowBlur = 0; }
+                    else { ctx.fillStyle = `rgba(147,197,253,${p.o})`; ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.shadowBlur = 8; ctx.shadowColor = 'rgba(147,197,253,.8)'; }
+                    ctx.fill();
+                }
+                raf = requestAnimationFrame(frame);
+            }
+            frame();
+            document.addEventListener('visibilitychange', () => document.hidden ? cancelAnimationFrame(raf) : frame());
+        })();
+    </script>
+</body>
+
+</html>
